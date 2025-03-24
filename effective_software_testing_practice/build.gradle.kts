@@ -41,9 +41,25 @@ dependencies {
     implementation("org.jacoco:jacoco-maven-plugin:0.8.12")
     implementation("org.apache.maven.reporting:maven-reporting-api:3.1.1")
 
+    // https://mvnrepository.com/artifact/net.jqwik/jqwik
+    testImplementation("net.jqwik:jqwik:1.9.2")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test:2.7.0")
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        includeEngines("jqwik")
+
+        // Or include several Junit engines if you use them
+        // includeEngines 'jqwik', 'junit-jupiter', 'junit-vintage'
+
+        // includeTags 'fast', 'medium'
+        // excludeTags 'slow'
+    }
+
+    include("**/*Properties.class")
+    include("**/*Test.class")
+    include("**/*Tests.class")
     finalizedBy(tasks.jacocoTestReport)
 }
